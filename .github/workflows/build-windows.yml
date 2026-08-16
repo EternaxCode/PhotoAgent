@@ -37,6 +37,7 @@ jobs:
         run: python photoagent_win.py --selftest
         env:
           QT_QPA_PLATFORM: offscreen
+          QT_QPA_FONTDIR: C:\Windows\Fonts
 
       - name: Build executable (PyInstaller)
         working-directory: windows
@@ -49,6 +50,7 @@ jobs:
         run: .\dist\PhotoAgent\PhotoAgent.exe --smoke
         env:
           QT_QPA_PLATFORM: offscreen
+          QT_QPA_FONTDIR: C:\Windows\Fonts
 
       - name: Install Inno Setup
         run: choco install innosetup -y --no-progress
