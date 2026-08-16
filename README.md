@@ -9,7 +9,8 @@ macOS 네이티브 사진 자동 보정·정리 앱 (Swift + SwiftUI + Core Imag
 | 파일 | 대상 | 설치 방법 |
 |---|---|---|
 | `PhotoAgent-mac.dmg` | macOS 14+ | DMG 열고 PhotoAgent.app 을 응용 프로그램에 드래그. 처음 실행 시 **우클릭 → 열기** (개발자 미확인 경고 우회) |
-| `PhotoAgent-Windows.zip` | Windows 10/11 | 압축 풀고 `설치.bat` 더블클릭 → 바탕화면 바로가기 실행 |
+| `PhotoAgent-Setup.exe` | Windows 10/11 | 더블클릭 → 설치 마법사. Python 불필요. SmartScreen 경고 시 "추가 정보 → 실행" |
+| `PhotoAgent-Windows.zip` | Windows (수동) | 개발자용 — Python 필요, `install.bat` 실행 |
 
 > Mac 앱은 ad-hoc 서명이라 다른 Mac 에서 처음 열 때 "확인되지 않은 개발자" 경고가 뜹니다.
 > Finder 에서 앱을 **우클릭 → 열기** 한 번만 해주면 이후엔 그냥 실행됩니다.

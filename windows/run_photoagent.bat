@@ -1,5 +1,5 @@
 @echo off
-rem PhotoAgent for Windows 실행 스크립트
+rem PhotoAgent launcher (manual install)
 cd /d "%~dp0"
 where py >nul 2>nul
 if %errorlevel%==0 (

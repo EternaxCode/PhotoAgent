@@ -1267,6 +1267,12 @@ def run_gui(smoke: bool = False, smoke_folder: str | None = None) -> int:
 
     app = QApplication(sys.argv if not (smoke or smoke_folder) else [sys.argv[0]])
     app.setStyleSheet(STYLESHEET)
+    # PyInstaller frozen 실행에서는 리소스가 _MEIPASS(onefile) 또는 _internal(onedir)에 있다
+    base_dir = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
+    icon_path = base_dir / "icon.png"
+    if icon_path.exists():
+        from PySide6.QtGui import QIcon
+        app.setWindowIcon(QIcon(str(icon_path)))
     window = MainWindow()
 
     if smoke_folder:
