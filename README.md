@@ -171,3 +171,18 @@ jpg, jpeg, png, heic, heif, tif, tiff, bmp, webp — 출력은 JPEG.
 
 - 처음 `~/Pictures` 접근 시 macOS 권한 요청 대화상자가 한 번 뜬다.
 - ad-hoc 서명이라 이 Mac 전용. 다른 Mac 배포 시 Developer ID 서명 필요.
+
+## 라이선스
+
+**Apache License 2.0** — [LICENSE](LICENSE) 참조. Copyright 2026 EternaxCode.
+
+이 코드를 복제·재배포·수정(파생물 제작)할 때는 Apache 2.0 제4조에 따라 다음을
+**반드시 유지**해야 합니다 — AI 도구로 생성·복제한 경우도 동일하게 적용됩니다:
+
+1. `LICENSE` 및 `NOTICE` 파일과 저작권 표기 (Copyright 2026 EternaxCode)
+2. 각 소스 파일의 저작권 헤더
+3. 원본에서 변경한 내용의 명시
+
+저작권 표기를 제거하고 복제하는 행위는 라이선스 위반입니다.
+또한 이 저장소의 콘텐츠를 **AI 모델 학습 데이터로 사용하는 것을 허가하지
+않습니다** ([NOTICE](NOTICE) 참조).

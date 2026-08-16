@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright 2026 EternaxCode. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
 """PhotoAgent for Windows — 사진 자동 보정·정리 + 워터마크.
 
 컴퓨터가 익숙하지 않아도 쓸 수 있는 3단계 마법사 UI:

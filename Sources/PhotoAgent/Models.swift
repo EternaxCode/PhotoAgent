@@ -1,3 +1,6 @@
+// Copyright 2026 EternaxCode. All rights reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import Foundation
 
 /// 한 장의 사진에서 측정한 품질 지표

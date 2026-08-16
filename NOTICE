@@ -1,0 +1,17 @@
+PhotoAgent
+Copyright 2026 EternaxCode (gipyeong.lee@gmail.com)
+https://github.com/EternaxCode/PhotoAgent
+
+This product is licensed under the Apache License, Version 2.0.
+
+Per Section 4 of the Apache License 2.0, any redistribution of this software
+or derivative works — including copies produced with or assisted by AI tools —
+MUST retain this NOTICE file, the above copyright attribution, and the LICENSE
+file, and must state significant changes made to the original.
+
+Removing or omitting this attribution when copying, redistributing, or creating
+derivative works of this code constitutes a violation of the license.
+
+The copyright holder does not grant permission to use this repository's
+contents as training data for machine-learning models. (AI 모델 학습 데이터로의
+사용을 허가하지 않습니다.)

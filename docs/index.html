@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noai, noimageai">
+<meta name="description" content="PhotoAgent — 흔들린 사진을 자동으로 걸러내고, 잘 나온 사진만 보정해 주는 사진 정리 프로그램. macOS와 Windows 지원.">
+<title>PhotoAgent — 사진 자동 보정·정리</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>">
+<style>
+  :root {
+    --bg: #f6f7fb; --card: #ffffff; --text: #17203a; --muted: #5b6478;
+    --accent: #2f6fed; --accent-dark: #2456c4; --border: #e3e7f0;
+    --shadow: 0 8px 28px rgba(23, 32, 58, .08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1420; --card: #1a2233; --text: #e8ecf6; --muted: #9aa5bd;
+      --accent: #4c86ff; --accent-dark: #6d9bff; --border: #2a3550;
+      --shadow: 0 8px 28px rgba(0, 0, 0, .4);
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+  header { text-align: center; padding: 72px 0 40px; }
+  .logo { font-size: 64px; }
+  h1 { font-size: 40px; margin: 8px 0 12px; }
+  .tagline { font-size: 19px; color: var(--muted); }
+  .tagline b { color: var(--text); }
+
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 40px 0; }
+  @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 30px 26px; box-shadow: var(--shadow); text-align: center;
+  }
+  .card .os { font-size: 42px; }
+  .card h2 { font-size: 22px; margin: 8px 0 4px; }
+  .card .req { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+  .btn {
+    display: inline-block; background: var(--accent); color: #fff; text-decoration: none;
+    font-size: 17px; font-weight: 700; padding: 14px 30px; border-radius: 10px;
+    transition: background .15s;
+  }
+  .btn:hover { background: var(--accent-dark); }
+  .card ol {
+    text-align: left; margin: 18px 0 0 20px; font-size: 14px; color: var(--muted);
+  }
+  .card ol b { color: var(--text); }
+
+  section { margin: 56px 0; }
+  section h3 { font-size: 24px; margin-bottom: 16px; }
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .feature {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 18px;
+  }
+  .feature .ico { font-size: 26px; }
+  .feature b { display: block; margin: 6px 0 2px; }
+  .feature span { font-size: 14px; color: var(--muted); }
+
+  .safe {
+    background: var(--card); border: 1px solid var(--border); border-left: 5px solid var(--accent);
+    border-radius: 12px; padding: 18px 22px; font-size: 15px;
+  }
+  footer {
+    border-top: 1px solid var(--border); margin-top: 64px; padding: 28px 0 48px;
+    text-align: center; font-size: 13px; color: var(--muted);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">📸</div>
+    <h1>PhotoAgent</h1>
+    <p class="tagline">
+      흔들린 사진은 <b>자동으로 걸러내고</b>, 잘 나온 사진만 <b>예쁘게 보정</b>해서<br>
+      새 폴더에 저장해 주는 사진 정리 프로그램
+    </p>
+  </header>
+
+  <div class="cards">
+    <div class="card">
+      <div class="os">🍎</div>
+      <h2>Mac 용 받기</h2>
+      <div class="req">macOS 14 (Sonoma) 이상</div>
+      <a class="btn" href="https://github.com/EternaxCode/PhotoAgent/releases/latest/download/PhotoAgent-mac.dmg">
+        ⬇ DMG 다운로드
+      </a>
+      <ol>
+        <li>내려받은 DMG 파일을 열기</li>
+        <li>PhotoAgent 를 <b>응용 프로그램</b> 폴더로 드래그</li>
+        <li>처음 한 번만 앱을 <b>우클릭 → 열기</b><br>("확인되지 않은 개발자" 경고 통과)</li>
+      </ol>
+    </div>
+    <div class="card">
+      <div class="os">🪟</div>
+      <h2>Windows 용 받기</h2>
+      <div class="req">Windows 10 / 11</div>
+      <a class="btn" href="https://github.com/EternaxCode/PhotoAgent/releases/latest/download/PhotoAgent-Windows.zip">
+        ⬇ ZIP 다운로드
+      </a>
+      <ol>
+        <li>내려받은 ZIP 압축 풀기</li>
+        <li><b>설치.bat</b> 더블클릭 (자동 설치)</li>
+        <li>바탕화면의 <b>PhotoAgent</b> 더블클릭으로 실행</li>
+      </ol>
+    </div>
+  </div>
+
+  <section>
+    <div class="safe">
+      🔒 <b>원본 사진은 절대 바뀌지 않아요.</b>
+      결과는 원래 폴더 옆에 <b>“폴더이름_결과”</b> 라는 새 폴더로 저장됩니다.
+    </div>
+  </section>
+
+  <section>
+    <h3>무엇을 해 주나요?</h3>
+    <div class="features">
+      <div class="feature"><div class="ico">🔍</div><b>흔들린 사진 자동 감지</b>
+        <span>일부러 배경을 흐리게 찍은 사진(아웃포커싱)과 실제로 흔들린 사진을 구별합니다.</span></div>
+      <div class="feature"><div class="ico">✨</div><b>자동 보정</b>
+        <span>밝기·색감·선명도를 자동으로 다듬어 저장합니다. 촬영 정보(EXIF)도 유지돼요.</span></div>
+      <div class="feature"><div class="ico">✍️</div><b>워터마크</b>
+        <span>이름이나 로고를 원하는 위치·크기·글씨체로 넣을 수 있어요. 전체 또는 사진별 선택 적용.</span></div>
+      <div class="feature"><div class="ico">📐</div><b>크기·형식 선택</b>
+        <span>저장할 사진 크기(원본~작게)와 파일 형식(JPG/PNG 등)을 고를 수 있습니다.</span></div>
+      <div class="feature"><div class="ico">🎛️</div><b>전문 편집 (Mac)</b>
+        <span>노출·색상·디테일 슬라이더, 히스토그램, 피사체/배경 분리 보정, 배경 흐림 효과.</span></div>
+      <div class="feature"><div class="ico">🖱️</div><b>쉬운 사용법</b>
+        <span>폴더 고르기 → 확인 → 저장, 3단계면 끝. 컴퓨터가 익숙하지 않아도 괜찮아요.</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 EternaxCode · <a href="https://github.com/EternaxCode/PhotoAgent">GitHub 저장소</a>
+      · <a href="https://github.com/EternaxCode/PhotoAgent/blob/main/LICENSE">Apache License 2.0</a></p>
+    <p>소스 코드 재배포 시 저작권 표기와 NOTICE 유지 필수 · AI 모델 학습 데이터 사용 불허</p>
+  </footer>
+</div>
+</body>
+</html>

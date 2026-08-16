@@ -1,3 +1,6 @@
+// Copyright 2026 EternaxCode. All rights reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 import Foundation
 
 /// GUI 없이 터미널에서 실행하는 모드.
