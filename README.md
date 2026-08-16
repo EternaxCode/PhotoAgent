@@ -172,6 +172,12 @@ jpg, jpeg, png, heic, heif, tif, tiff, bmp, webp — 출력은 JPEG.
 - 처음 `~/Pictures` 접근 시 macOS 권한 요청 대화상자가 한 번 뜬다.
 - ad-hoc 서명이라 이 Mac 전용. 다른 Mac 배포 시 Developer ID 서명 필요.
 
+## 후원
+
+PhotoAgent 가 도움이 됐다면 개발을 응원해 주세요 — 금액은 자유입니다.
+
+**[💙 Stripe 로 후원하기](https://buy.stripe.com/7sY9AT1Fk53k62va2Mg3600)**
+
 ## 라이선스
 
 **Apache License 2.0** — [LICENSE](LICENSE) 참조. Copyright 2026 EternaxCode.

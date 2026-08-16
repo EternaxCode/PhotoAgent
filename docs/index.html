@@ -165,6 +165,16 @@
   .dl-steps b { color: var(--text); font-weight: 600; }
 
   /* FAQ */
+  /* Support */
+  .support-card {
+    background: var(--bg-soft); border: 1px solid var(--border); border-radius: 18px;
+    padding: 48px 32px; text-align: center; max-width: 640px; margin: 0 auto;
+  }
+  .support-card svg { width: 36px; height: 36px; color: var(--accent); margin-bottom: 14px; }
+  .support-card h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+  .support-card p { color: var(--muted); font-size: 15.5px; margin: 12px auto 24px; max-width: 480px; }
+  .support-note { margin-top: 14px; font-size: 12.5px; color: var(--faint); }
+
   .faq { max-width: 760px; margin: 0 auto; display: grid; gap: 10px; }
   details {
     background: var(--card); border: 1px solid var(--border);
@@ -196,6 +206,7 @@
       <a href="#features">Features</a>
       <a href="#how">How it works</a>
       <a href="#download">Download</a>
+      <a href="#support">Support</a>
       <a href="#faq">FAQ</a>
       <a class="nav-gh" href="https://github.com/EternaxCode/PhotoAgent">
         <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
@@ -338,6 +349,24 @@
   </div>
 </section>
 
+<section id="support" class="wrap">
+  <div class="support-card">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19.5 12.57 12 20l-7.5-7.43A5 5 0 1 1 12 6.01a5 5 0 1 1 7.5 6.56z"/>
+    </svg>
+    <h2>Support the project</h2>
+    <p>
+      PhotoAgent is free and open source, built and maintained independently.
+      If it saves you time, consider supporting continued development —
+      any amount helps.
+    </p>
+    <a class="btn btn-primary" href="https://buy.stripe.com/7sY9AT1Fk53k62va2Mg3600">
+      Donate — choose your amount
+    </a>
+    <div class="support-note">Secure checkout powered by Stripe · One-time, no account needed</div>
+  </div>
+</section>
+
 <section id="faq" class="wrap">
   <div class="sec-head">
     <h2>Frequently asked questions</h2>
@@ -378,6 +407,7 @@
         <a href="https://github.com/EternaxCode/PhotoAgent">Source code</a>
         <a href="https://github.com/EternaxCode/PhotoAgent/releases">Releases</a>
         <a href="https://github.com/EternaxCode/PhotoAgent/issues">Report an issue</a>
+        <a href="https://buy.stripe.com/7sY9AT1Fk53k62va2Mg3600">Donate</a>
       </div>
     </div>
     <div class="foot-note">
