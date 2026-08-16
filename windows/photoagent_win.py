@@ -27,6 +27,11 @@ import cv2
 import numpy as np
 from PIL import Image, ImageOps
 
+# Windows 콘솔(cp949/cp1252)에서 한글 출력이 깨지거나 크래시하지 않도록 UTF-8 강제
+for _stream in (sys.stdout, sys.stderr):
+    if _stream is not None and hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+
 # ---------------------------------------------------------------------------
 # 분석 (macOS 버전과 동일한 알고리즘·임계값)
 # ---------------------------------------------------------------------------
