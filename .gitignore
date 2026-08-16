@@ -1,0 +1,11 @@
+.build/
+dist/
+release/
+.DS_Store
+__pycache__/
+*.pyc
+windows/build/
+windows/dist/
+windows/*.spec
+.venv/
+venv/
