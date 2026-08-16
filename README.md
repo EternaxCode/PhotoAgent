@@ -1,195 +1,230 @@
 # PhotoAgent
 
-macOS 네이티브 사진 자동 보정·정리 앱 (Swift + SwiftUI + Core Image) + Windows 버전.
+Automatic photo culling and enhancement for macOS (native Swift + SwiftUI + Core Image) and Windows (Python + Qt).
 
-## 다운로드 (설치 파일)
+PhotoAgent scans a folder of photos, detects camera shake — and knows the difference
+between shake and intentional bokeh — then enhances your best shots and exports them
+to a separate folder. **Originals are never modified.**
 
-[**Releases 페이지**](https://github.com/EternaxCode/PhotoAgent/releases) 에서 받으세요:
+**Website:** https://eternaxcode.github.io/PhotoAgent/
 
-| 파일 | 대상 | 설치 방법 |
+## Download
+
+Grab the latest installers from the [**Releases page**](https://github.com/EternaxCode/PhotoAgent/releases):
+
+| File | Platform | Install |
 |---|---|---|
-| `PhotoAgent-mac.dmg` | macOS 14+ | DMG 열고 PhotoAgent.app 을 응용 프로그램에 드래그. 처음 실행 시 **우클릭 → 열기** (개발자 미확인 경고 우회) |
-| `PhotoAgent-Setup.exe` | Windows 10/11 | 더블클릭 → 설치 마법사. Python 불필요. SmartScreen 경고 시 "추가 정보 → 실행" |
-| `PhotoAgent-Windows.zip` | Windows (수동) | 개발자용 — Python 필요, `install.bat` 실행 |
+| `PhotoAgent-mac.dmg` | macOS 14+ | Open the DMG and drag PhotoAgent to Applications. First launch: **right-click → Open** (unidentified-developer prompt) |
+| `PhotoAgent-Setup.exe` | Windows 10/11 | Run the installer — no Python required. If SmartScreen appears: "More info → Run anyway" |
+| `PhotoAgent-Windows.zip` | Windows (manual) | For developers — requires Python, run `install.bat` |
 
-> Mac 앱은 ad-hoc 서명이라 다른 Mac 에서 처음 열 때 "확인되지 않은 개발자" 경고가 뜹니다.
-> Finder 에서 앱을 **우클릭 → 열기** 한 번만 해주면 이후엔 그냥 실행됩니다.
+> The macOS app is ad-hoc signed (not notarized), so macOS shows an
+> "unidentified developer" warning on first launch. Right-click the app and
+> choose **Open** once; macOS remembers your choice afterwards.
 
-폴더의 사진을 분석해 흔들리거나 노출이 잘못된 사진을 자동으로 걸러내고,
-잘 나온 사진만 자동 보정해서 별도 폴더로 내보낸다. **원본은 절대 수정하지 않는다.**
+## UI overview (macOS, three panes)
 
-## 실행
+- **Left sidebar** — source/output folder management · filters (all / keepers /
+  excluded / bokeh / shake / soft focus / exposure / edited, with counts) ·
+  shake-threshold slider
+- **Center grid** — thumbnails with verdict badges; thumbnail-size slider in the
+  status bar
+- **Right inspector** — verdict metrics, EXIF (camera, aperture, shutter, ISO,
+  capture date), and quick actions (editor, keep/exclude, reveal in Finder)
 
-```sh
-open dist/PhotoAgent.app
-```
+## Workflow
 
-또는 다시 빌드:
+1. Pick the **source folder** in the sidebar
+2. **Analyze** (⌘R) — sharpness and exposure are measured per photo
+3. Review the grid: **click = select** (inspector), **double-click = editor**,
+   **✓/✕ icon = toggle keep/exclude**
+   - Use sidebar filters to review only shaky or excluded photos
+   - Moving the threshold slider re-classifies instantly (no re-analysis)
+4. **Export** (⌘E) — the output folder opens in Finder when done
 
-```sh
-./build_app.sh
-```
+## Menu bar shortcuts
 
-## 화면 구성 (3패널)
-
-- **좌측 사이드바**: 폴더(원본/출력) 관리 · 필터(전체/보정 대상/제외/아웃포커싱/흔들림/초점불량/노출불량/편집한 사진, 건수 배지) · 판정 설정(흔들림 기준 슬라이더)
-- **중앙 격자**: 사진 썸네일 + 판정 배지. 하단 상태바에서 썸네일 크기 조절
-- **우측 인스펙터**: 선택한 사진의 판정 지표, EXIF(카메라·조리개·셔터·ISO·촬영일), 빠른 동작(편집기·포함/제외·Finder)
-
-## 사용 흐름
-
-1. 사이드바에서 **원본 폴더** 확인 (기본값: `~/Pictures/2026_08_14`)
-2. 툴바 **분석** (⌘R) — 선명도·노출 측정해 판정
-3. 격자에서 확인: **클릭 = 선택**(인스펙터 표시), **더블클릭 = 보정 편집기**, **✓/✕ 아이콘 = 포함/제외 전환**
-   - 사이드바 필터로 흔들림/제외 대상만 모아 검토
-   - 흔들림 기준 슬라이더 → 판정 즉시 갱신 (재분석 불필요)
-4. 툴바 **내보내기** (⌘E) — 완료되면 출력 폴더가 Finder로 열림
-
-## 메뉴바 단축키
-
-| 메뉴 | 항목 |
+| Menu | Items |
 |---|---|
-| 파일 | 원본 폴더 열기 ⌘O · 출력 폴더 선택 ⇧⌘O · 출력 폴더 Finder 열기 |
-| 사진 | 분석 ⌘R · 내보내기 ⌘E · 편집기 열기 ↩ · 포함/제외 ⌘K |
-| 보정 | 설정 복사 ⇧⌘C · 붙여넣기 ⇧⌘V · 전체 적용 ⌥⇧⌘V · 설정 제거 |
-| 보기 | 필터 ⌘1~⌘5 · 인스펙터 ⌥⌘I |
+| File | Open source folder ⌘O · Choose output folder ⇧⌘O · Reveal output in Finder |
+| Photos | Analyze ⌘R · Export ⌘E · Open editor ↩ · Toggle keep/exclude ⌘K |
+| Adjustments | Copy settings ⇧⌘C · Paste ⇧⌘V · Apply to all keepers ⌥⇧⌘V · Clear settings |
+| View | Filters ⌘1–⌘5 · Inspector ⌥⌘I |
 
-## 출력 구조
+## Output structure
 
 ```
-<원본폴더명>_결과/
-├── 보정완료/        자동 보정된 JPEG (EXIF 유지, 품질 92)
-├── 제외됨/
-│   ├── 흔들림/      원본 복사본
-│   ├── 어두움/
-│   ├── 과노출/
-│   └── 수동제외/
-└── 처리결과.txt     장별 판정·지표 리포트
+<source-folder>_결과/
+├── 보정완료/        enhanced photos (EXIF preserved, quality 92)
+├── 제외됨/          excluded originals, filed by reason
+│   ├── 흔들림/      camera shake
+│   ├── 어두움/      too dark
+│   ├── 과노출/      overexposed
+│   └── 수동제외/    manually excluded
+└── 처리결과.txt     per-photo verdict report
 ```
 
-## 판정 기준
+## How verdicts work
 
-아웃포커싱(의도적 배경 흐림)과 흔들림을 구별한다:
+PhotoAgent distinguishes intentional background blur (bokeh) from camera shake:
 
-1. **피사체 선명도** — Vision 주목 영역(saliency)과 타일별 Laplacian variance 상위값 중
-   큰 값. 아웃포커싱 사진은 배경이 흐려도 피사체 타일은 선명하므로 여기서 살아남는다.
-2. **블러 방향성(이방비)** — gradient structure tensor 고유값 비율. 흔들림은 한 방향으로
-   번져서 값이 크고(≥2.5), 초점 블러는 등방이라 1에 가깝다.
+1. **Subject sharpness** — the larger of the Vision saliency-region score and the
+   top tile-level Laplacian variance. A bokeh shot survives here because its
+   subject tiles stay sharp even when the background is soft.
+2. **Blur directionality (anisotropy)** — the eigenvalue ratio of the gradient
+   structure tensor. Motion blur smears in one direction (ratio ≥ 2.5), while
+   defocus blur is isotropic (ratio ≈ 1).
 
-| 판정 | 조건 | 처리 |
+| Verdict | Condition | Action |
 |---|---|---|
-| 양호 | 피사체 선명도 ≥ 임계값×2 | 보정 |
-| 양호·아웃포커싱 | 양호 + 배경 타일 중앙값 낮음 | 보정 (배지 표시) |
-| 흔들림 | 전체 흐림 + 이방비 ≥ 2.5 | **제외** |
-| 초점불량 | 전체 흐림 + 등방 | 보정 (의도일 수 있음, 배지 표시) |
-| 너무 어두움 | 평균 휘도 < 32 이고 섀도우 클리핑 > 35% | 제외 |
-| 과노출 | 평균 휘도 > 218 또는 하이라이트 클리핑 > 45% | 제외 |
+| Good | subject sharpness ≥ threshold × 2 | enhance |
+| Good · bokeh | good + low background-tile median | enhance (badge) |
+| Camera shake | everything soft + anisotropy ≥ 2.5 | **exclude** |
+| Soft focus | everything soft + isotropic | enhance (may be intentional; badge) |
+| Too dark | mean luma < 32 and shadow clipping > 35% | exclude |
+| Overexposed | mean luma > 218 or highlight clipping > 45% | exclude |
 
-제외 대상은 흔들린 사진(과 노출불량)뿐 — 아웃포커싱·초점불량은 보정 대상에 남고,
-격자에서 클릭으로 언제든 수동 제외할 수 있다. "대상흐림?" 배지는 배경은 선명한데
-피사체 영역이 흐린 경우(초점 빗나감 의심)의 경고 표시다.
+Only shaken photos (and exposure failures) are auto-excluded — bokeh and
+soft-focus shots stay in the keep pile, and any verdict can be overridden with a
+click. A "soft subject?" badge warns when the background is sharp but the
+subject region is not (likely missed focus).
 
-보정 내용: Core Image 자동 보정 (톤커브, 비브런스, 하이라이트/섀도우, 얼굴 밸런스,
-레드아이 제거) + 선택적 추가 선명화.
+Base enhancement: Core Image auto adjustments (tone curve, vibrance,
+highlight/shadow, face balance, red-eye removal) plus optional sharpening.
 
-## 보정 편집기 (사진별)
+## Per-photo editor (macOS)
 
-격자 셀의 슬라이더 아이콘(또는 우클릭 → 보정 편집기 열기…)으로 편집기를 연다.
-모든 조정은 실시간 미리보기 + RGB 히스토그램으로 확인된다.
+Open it from a grid cell's slider icon or right-click → Open editor. Every
+adjustment updates a live preview with an RGB histogram.
 
-| 섹션 | 조정 |
+| Section | Adjustments |
 |---|---|
-| 기본 | 노출(EV), 대비, 하이라이트, 섀도우 |
-| 색상 | 색온도, 틴트, 생동감, 채도 |
-| 디테일 | 선명화, 노이즈 감소 |
-| 효과 | 비네트, 수평(±10°), 배경 흐림(심도)·경계 부드러움 |
+| Basic | Exposure (EV), contrast, highlights, shadows |
+| Color | Temperature, tint, vibrance, saturation |
+| Detail | Sharpening, noise reduction |
+| Effects | Vignette, straighten (±10°), background blur (depth) + edge feather |
 
-### 영역 분리 보정 (피사체/배경)
+### Region-separated editing (subject / background)
 
-편집기 상단의 **[전체 | 피사체 | 배경]** 탭으로 보정 범위를 전환한다.
-Vision 피사체 마스크를 기준으로 피사체와 배경에 **서로 다른 보정**을 적용:
+Switch scope with the **[All | Subject | Background]** tabs. Using the Vision
+subject mask, apply **different adjustments to subject and background**:
 
-- 피사체/배경 각각 노출·대비·하이라이트·섀도우·색온도·틴트·생동감·채도·선명화·노이즈 감소
-- **경계 부드러움** 슬라이더로 두 영역의 이음새 페더링
-- 전역 보정 → 영역 보정 → 심도 → 수평 순서로 합성. 마스크는 한 번만 생성해 공유
-- 예: 피사체 +0.3EV·선명화, 배경 -0.4EV·채도 낮춤 → 피사체가 도드라지는 룩
+- Independent exposure, contrast, highlights, shadows, temperature, tint,
+  vibrance, saturation, sharpening, and noise reduction per region
+- **Edge feather** slider blends the seam between regions
+- Composited as global → region → depth → straighten; the mask is generated once
+  and shared
+- Example: subject +0.3 EV + sharpening, background −0.4 EV + desaturation →
+  the subject pops
 
-- **자동 보정** 토글: Apple 자동 향상(톤커브·비브런스·레드아이 등)을 켜고 끔
-- **프리셋**: 기본 / 선명하게 / 인물 / 풍경 / 음식 / 흑백 / **피사체 강조(영역)** / **배경 정리(영역)**
-- **⌘← / ⌘→**: 편집 자동 적용하고 이전/다음 사진으로 이동 (연속 작업)
-- **원본 비교** 토글, **피사체 마스크 보기**, 레이블 더블클릭 = 값 초기화
-- 심도는 Vision 피사체 리프팅 마스크 기반 — 배경만 블러. 인식 실패 시 비활성화
-- 적용하면 셀에 `편집`/`심도` 배지. 내보내기 때 **원본 해상도**에 동일 비율로 적용
+More editor features:
 
-### 설정 복사/일괄 적용
+- **Auto-enhance** toggle (Apple auto adjustments on/off)
+- **Presets**: Default / Crisp / Portrait / Landscape / Food / B&W /
+  **Subject pop (region)** / **Background cleanup (region)**
+- **⌘← / ⌘→** — auto-apply and move to the previous/next photo
+- **Compare original** toggle, **show subject mask**, double-click a label to
+  reset that value
+- Depth blur uses the Vision subject-lifting mask (background only); disabled
+  when no subject is detected
+- Edited cells get `편집`/`심도` badges; exports apply the same proportions at
+  full resolution
 
-셀 우클릭 → **보정 설정 복사** → 다른 셀에 **붙여넣기**, 또는
-**복사한 설정을 보정 대상 전체에 적용** 으로 한 번에 일괄 보정.
+### Copy / batch-apply settings
 
-## 워터마크
+Right-click a cell → **Copy settings**, then **Paste** onto another cell, or
+**Apply copied settings to all keepers** for one-pass batch grading.
 
-툴바 **워터마크** 버튼(⇧⌘W) → 설정 시트 (선택 사진으로 라이브 미리보기):
+## Watermark
 
-- **텍스트**: 문구, 시스템 폰트 선택, 크기(긴 변 %), 색상 — 가독성 그림자 자동
-- **이미지 로고**: PNG(투명 배경 권장), 로고 폭 %
-- 공통: 불투명도, 여백, 3×3 위치 앵커
-- **일괄 적용**: "모든 사진에 적용" 버튼 또는 보정 메뉴
-- **선택 적용**: 셀 우클릭 "워터마크 켜기/끄기", 인스펙터 토글 — 전역 기본에 사진별 override
-- 내보내기 때 원본 해상도 기준 동일 비율로 합성. 셀에 `WM` 배지
+Toolbar **Watermark** button (⇧⌘W) opens the settings sheet with a live preview:
 
-## 내보내기 크기·형식
+- **Text**: custom string, any system font, size (% of long edge), color —
+  a legibility shadow is added automatically
+- **Image logo**: PNG (transparent background recommended), width %
+- Common: opacity, margin, 3×3 position anchor
+- **Batch**: "Apply to all photos" button or the Adjustments menu
+- **Selective**: right-click a cell → toggle watermark, or use the inspector —
+  per-photo overrides on top of the global default
+- Composited at full resolution on export; watermarked cells show a `WM` badge
 
-사이드바 "내보내기 설정" — 크기(원본/4096/2048/1280px 긴 변)와 형식(JPEG/HEIC/PNG).
-크기 조절은 Lanczos, 워터마크는 조절된 크기 기준으로 얹힘.
+## Export size & format
 
-## Windows 버전 (초보자용)
+Sidebar "Export settings" — size (original / 4096 / 2048 / 1280 px long edge)
+and format (JPEG / HEIC / PNG). Resizing uses Lanczos; the watermark scales to
+the output size.
 
-`windows/` 폴더 — Python + Qt 크로스플랫폼 버전 (`README_WINDOWS.md` 참고).
+## Windows version
 
-- **설치**: `설치.bat` 더블클릭 (Python 자동 설치 + 바탕화면 바로가기)
-- **UI**: ① 사진 폴더 고르기 → ② 확인하기 → ③ 저장하기 — 3단계 마법사.
-  쉬운 말 표기("흔들려 흐린 사진"), 클릭 한 번으로 저장/제외 전환,
-  완료 후 저장 폴더 바로 열기
-- 워터마크(일괄/선택)·저장 크기(원본/4096/2048/1280)·형식(JPG/PNG/WebP) 지원
-- `build_exe.bat` → 단일 `PhotoAgent.exe` 배포 파일 생성
+The `windows/` folder contains the cross-platform Python + Qt version
+(see `windows/README_WINDOWS.md`). Same detection algorithm and thresholds.
 
-## CLI 모드
+- **Install**: run `PhotoAgent-Setup.exe` from Releases — built automatically by
+  GitHub Actions (`.github/workflows/build-windows.yml`) with PyInstaller and
+  Inno Setup. Start-menu and desktop shortcuts included; no Python needed.
+- **UI**: a beginner-friendly three-step wizard — ① pick a folder → ② review →
+  ③ save. Plain-language verdicts, one-click keep/exclude, open-folder button
+  when finished.
+- Watermarking (batch/selective), export size (original/4096/2048/1280) and
+  format (JPG/PNG/WebP) supported.
+- Not included on Windows: the per-photo editor, depth blur, and region editing
+  (they depend on Apple's Vision framework).
 
-GUI 없이 터미널에서도 실행 가능:
+## CLI mode
+
+Both versions run headless:
 
 ```sh
-.build/release/PhotoAgent --cli ~/Pictures/2026_08_14 --dry-run          # 분석만
-.build/release/PhotoAgent --cli ~/Pictures/2026_08_14                     # 분석 + 내보내기
-.build/release/PhotoAgent --cli <폴더> --out <출력폴더> --threshold 60 --no-sharpen
-.build/release/PhotoAgent --selftest                                      # 파이프라인 자가 검증
+# macOS
+.build/release/PhotoAgent --cli <folder> --dry-run          # analyze only
+.build/release/PhotoAgent --cli <folder> --out <output> --threshold 60 --no-sharpen
+.build/release/PhotoAgent --selftest                        # pipeline self-check
+
+# Windows
+python photoagent_win.py --cli <folder> --watermark-text "© Name" --max-edge 2048 --format webp
+python photoagent_win.py --selftest
 ```
 
-## 지원 포맷
+## Building from source
 
-jpg, jpeg, png, heic, heif, tif, tiff, bmp, webp — 출력은 JPEG.
+```sh
+# macOS app bundle (requires Xcode command-line tools)
+./build_app.sh            # → dist/PhotoAgent.app
 
-## 참고
+# Windows executable (on Windows)
+cd windows && build_exe.bat   # → dist/PhotoAgent.exe
+```
 
-- 처음 `~/Pictures` 접근 시 macOS 권한 요청 대화상자가 한 번 뜬다.
-- ad-hoc 서명이라 이 Mac 전용. 다른 Mac 배포 시 Developer ID 서명 필요.
+## Supported formats
 
-## 후원
+Input: jpg, jpeg, png, heic, heif, tif, tiff, bmp, webp.
 
-PhotoAgent 가 도움이 됐다면 개발을 응원해 주세요 — 금액은 자유입니다.
+## Notes
 
-**[💙 Stripe 로 후원하기](https://buy.stripe.com/7sY9AT1Fk53k62va2Mg3600)**
+- macOS asks for permission the first time the app reads a protected folder
+  (Pictures, Desktop, etc.).
+- Distribution builds are unsigned (ad-hoc on macOS, no Authenticode on
+  Windows); see the FAQ on the website for the one-time bypass steps.
 
-## 라이선스
+## Support the project
 
-**Apache License 2.0** — [LICENSE](LICENSE) 참조. Copyright 2026 EternaxCode.
+If PhotoAgent saves you time, consider supporting development — any amount helps.
 
-이 코드를 복제·재배포·수정(파생물 제작)할 때는 Apache 2.0 제4조에 따라 다음을
-**반드시 유지**해야 합니다 — AI 도구로 생성·복제한 경우도 동일하게 적용됩니다:
+**[💙 Donate via Stripe](https://buy.stripe.com/7sY9AT1Fk53k62va2Mg3600)**
 
-1. `LICENSE` 및 `NOTICE` 파일과 저작권 표기 (Copyright 2026 EternaxCode)
-2. 각 소스 파일의 저작권 헤더
-3. 원본에서 변경한 내용의 명시
+## License
 
-저작권 표기를 제거하고 복제하는 행위는 라이선스 위반입니다.
-또한 이 저장소의 콘텐츠를 **AI 모델 학습 데이터로 사용하는 것을 허가하지
-않습니다** ([NOTICE](NOTICE) 참조).
+**Apache License 2.0** — see [LICENSE](LICENSE). Copyright 2026 EternaxCode.
+
+When copying, redistributing, or modifying this code (including copies produced
+with or assisted by AI tools), Section 4 of the Apache License requires you to
+**retain**:
+
+1. The `LICENSE` and `NOTICE` files and the copyright attribution
+   (Copyright 2026 EternaxCode)
+2. The copyright headers in each source file
+3. A statement of significant changes made to the original
+
+Removing the attribution while copying this code is a license violation.
+Additionally, use of this repository's contents as **machine-learning training
+data is not permitted** (see [NOTICE](NOTICE)).
